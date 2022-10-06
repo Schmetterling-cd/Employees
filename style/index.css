@@ -1,0 +1,99 @@
+html{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+body{
+    margin: 0 ;
+    padding: 0 ;
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('../img/Pattern\ Illustrations.jpeg');
+}
+
+.screen{
+    width: 1600px;
+    max-height: 900px;
+    min-height: 300px;
+    border-radius: 30px;
+    background-color: rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: column;
+    align-items: center;
+}
+
+.table{
+    width: 1400px;
+    max-height: 900px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: column;
+    align-items: center;
+}
+
+.table__head{
+    width: 1400px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.head__bold{
+    width: 200px;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.item{
+    width: 1400px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.item__style{
+    width: 200px;
+    font-size: 18px;
+}
+
+.button__foot{
+    width: 200px;
+    height: 40px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.623);
+    border-radius: 10px;
+    color: whitesmoke;
+}
+
+.button__body{
+    width: 70px;
+    height: 40px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.623);
+    border-radius: 10px;
+    color: whitesmoke;
+}
+
+.free_space{
+    width: 70px;
+}
