@@ -1,6 +1,6 @@
 <?php
 
-class MySQL_DB
+class Database
 {
     protected $mysql;
     protected $name;
@@ -13,6 +13,7 @@ class MySQL_DB
         $this->user = $user;
         $this->password = $password;
         $this->database = $database;
+        $this->Connect();
     }
 
     public function Connect(){
@@ -20,28 +21,43 @@ class MySQL_DB
         $this->mysql = new mysqli($this->name,$this->user,$this->password,$this->database);
     }
 
-    public function Select_group_by_id($from,$to){
-        $select = $this->mysql->prepare("SELECT * FROM `Employees` WHERE (id >= ? AND id < ?)");
-        $select->bind_param("is", $from,$to);
+    public function AddNewEmployee($first_name, $second_name, $birthday, $salary){
+        $select = $this->mysql->prepare("CALL AddNewEmployee ( ?, ?, ?, ?)");
+        $select->bind_param("ssss", $first_name, $second_name, $birthday, $salary);
+        $select->execute(); 
+        unset($select);
+    }
+    
+    public function DeleteEmployeeById($id){
+        $select = $this->mysql->prepare("CALL DeleteEmployeeById (?)");
+        $select->bind_param("i", $id);
+        return $select->execute(); 
+    }
+    
+    public function EmployeeOrderBy($state, $from, $to){
+        $select = $this->mysql->prepare("CALL EmployeeOrderBy ( ?, ?, ?)");
+        $select->bind_param("is", $state, $from, $to);
         return $select->execute(); 
     }
 
-    public function Select_worker_by_id($id){
-        $select = $this->mysql->prepare("SELECT * FROM `Employees` WHERE id =  ?");
-        $select->bind_param("is", $id);
-        return $select->execute(); 
+    public function SelectGroupById($from,$to){
+        $select = $this->mysql->query("CALL SelectGroupById ( ${from}, ${to})");
+        $result = mysqli_fetch_all($select, MYSQLI_ASSOC);;
+        return $result; 
     }
 
-    // public function Update($view,$value,$id){
-    //     $select = $this->mysql->prepare("UPDATE `Employees` SET `?`='?' WHERE id = ?;");
-    //     $select->bind_param("is",$view, $value, $id);
-    //     return $select->execute(); 
-    // }
+    public function SelectWorkerById($id){
+        $select = $this->mysql->query("CALL SelectWorkerById (${id})");
+        $result = mysqli_fetch_all($select, MYSQLI_ASSOC);
+        return $result; 
+    }
 
-    public function Update($first_name, $second_name, $birthday, $salary, $id){
-        $select = $this->mysql->prepare("UPDATE `Employees` SET `First_name`='?',`Second_name`='?',`Birthday`='?',`Salary`='?' WHERE id`='?'");
-        $select->bind_param("is", $first_name, $second_name, $birthday, $salary, $id);
-        return $select->execute(); 
+    public function UpdateEmployeeInfo($first_name, $second_name, $birthday, $salary, $id){
+        //$this->mysql->query("UPDATE `Employees` SET `First_name` = '${first_name}', `Second_name` = '${second_name}', `Birthday` = '${birthday}', `Salary` = '${salary}' WHERE id = '${id}'");
+        $select = $this->mysql->prepare("CALL UpdateEmployeeInfo (?,?,?,?,?)");
+        $select->bind_param("sssss", $id , $first_name, $second_name, $birthday, $salary);
+        $select->execute(); 
+        unset($select);
     }
 }
 ?>

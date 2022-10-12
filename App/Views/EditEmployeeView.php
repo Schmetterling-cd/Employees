@@ -3,35 +3,43 @@ include_once '/var/www/vlad/Employees/autoload.php';
 
 class EditEmployeeView 
 {
-    public function __construct()
-    {
-        $this->Render();
-    }
 
-    static function Render(){
-        $vars['TITLE'] = 'List';
-        $vars['BODY'] = '<div class="screen">
-        <div class="table">
-            <div class="table__head">
-                <div class="head__bold">First name</div>
-                <div class="head__bold">Second name</div>
-                <div class="head__bold">Birthday</div>
-                <div class="head__bold">Salary</div>    
+    static function Render($employee){
+        $today = date("20y-m-d");
+        $vars['TITLE'] = 'Edit';
+        $vars['BODY'] = "<form class='screen' method='post' action='./EmployeeController.php'>
+        <div class='table'>
+            <div class='table__head'>
+                <div class='head__bold'>Edit employee</div>  
             </div>
-            <div class="item">
-                <div class="item__style">Ivanov</div>
-                <div class="item__style">Ivan</div>
-                <div class="item__style">01.01.1970</div>
-                <div class="item__style">500$</div>
+            <div class='add__zone'>
+                <div class='add__line'>
+                    <div class='add__field'>First Name</div>
+                    <input class='add__input' type='input' name='FirstName' placeholder='First Name' value ='".$employee['First_name']."'>
+                </div>
+                <div class='add__line'>
+                    <div class='add__field'>Second name</div>
+                    <input class='add__input' type='input' name='SecondName' placeholder='Second Name' value='".$employee['Second_name']."'>
+                </div>
+                <div class='add__line'>
+                    <div class='add__field'>Birthday</div>
+                    <input class='add__input' type='date' name='Birthday' min='22-10-08' max='${today}' value='".$employee['Birthday']."'>
+                </div>
+                <div class='add__line'>
+                    <div class='add__field'>Salary</div>
+                    <input class='add__input' type='input' name='Salary' placeholder='Salary' value='".$employee['Salary']."'>
+                </div>
             </div>
         </div>
-        <div class="button_zone">
-
+        <div class='button_zone'>
+            <input class='button__foot' type='submit' name='btnSaveEdit".$employee['id']."' value='Save'>
+            <input class='button__foot' type='submit' name='btnCancel' value='Cancel'>
         </div>
-    </div>';
+    </form>";
 
     $output = new Template('/var/www/vlad/Employees/index',$vars);
     $html = $output->RenderTemplate();
+    unset($output);
     echo $html;
     }
 }

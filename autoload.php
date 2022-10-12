@@ -1,6 +1,6 @@
 <?php
 
-    function glob_tree_search($path, $pattern, $_base_path = null)
+    function glob_tree_search($path, $pattern, $_base_path)
     {
         if (is_null($_base_path)) {
             $_base_path = '';
@@ -24,7 +24,7 @@
     spl_autoload_register(function(string $class){
         
         $path = '/var/www/vlad/Employees';
-        $files = glob_tree_search($path, "{$class}.php");
+        $files = glob_tree_search($path, "{$class}.php", null);
 
         $class = str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
         $path = __DIR__."/{$files[0]}";
