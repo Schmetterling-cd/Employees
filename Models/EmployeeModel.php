@@ -8,7 +8,7 @@
         }
 
         public function Start(){
-            $this->List(1,10);
+            $this->List(0,10);
         }
 
         public function PageSwitching($process, $val){
@@ -21,26 +21,42 @@
                     AddEmployeeView::Render();
                     break;
                 case 2:
-                    $this->List(1,10);
+                    $this->List(0,10);
                     exit();
                     break;
                 case 3:
                     $this->Delete($val);
-                    $this->List(1,10);
+                    $page = (int)$_POST['Page'];
+                    $from = ($page - 1) * 10;
+                    $to = $from + 10;
+                    $this->List($from,$to);
                     exit();
                     break;
                 case 4:
                     $this->Update($val[0],$val[1],$val[2],$val[3],$val[4]);
-                    $this->List(1,10);
-                    exit();
+                    $from = (intdiv((int)$val[0], 10)) *10;
+                    $to = (int)$from + 10;
+                    $this->List($from,$to);
                     break;
                 case 5:
                     $this->Create($val[0],$val[1],$val[2],$val[3]);
-                    $this->List(1,10);
+                    $this->List(0,10);
                     break;
                 case 6:
-                    $this->List(1,10);
-                    exit();
+                    $page = (int)$_POST['Page'];
+                    $page++;
+                    $from = ($page - 1) * 10;
+                    $to = $from + 10;
+                    $this->List($from,$to);
+                    break;
+                case 7:
+                    $page = (int)$_POST['Page'];
+                    if($page>1){
+                        $page--;
+                    }
+                    $from = ($page - 1) * 10;
+                    $to = $from + 10;
+                    $this->List($from,$to);
                     break;
             }
         }

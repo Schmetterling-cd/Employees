@@ -7,7 +7,13 @@ class EditEmployeeView
     static function Render($employee){
         $today = date("20y-m-d");
         $vars['TITLE'] = 'Edit';
-        $vars['BODY'] = "<form class='screen' method='post' action='./EmployeeController.php'>
+        $action = "/App/Controllers/EmployeeController.php";
+        if(stripos($_SERVER["REQUEST_URI"], '/App/Controllers') !== false){
+            $action = str_replace('/Employees/App/Controllers','',$_SERVER["REQUEST_URI"]);
+        }else{
+            
+        }
+        $vars['BODY'] = "<form class='screen' method='post' action='.$action'>
         <div class='table'>
             <div class='table__head'>
                 <div class='head__bold'>Edit employee</div>  

@@ -20,7 +20,7 @@ if($_POST){
         unset($model);
     }
 
-    if(stripos(array_key_last($_POST), 'btnDelete') !== false){
+    if(stripos(array_key_first($_POST), 'btnDelete') !== false){
         $id = (int)str_replace('btnDelete','',array_key_first($_POST));
         $model = new EmployeeModel();
         $model->PageSwitching(3, $id);
@@ -43,11 +43,14 @@ if($_POST){
     }
 
     if(stripos(array_key_last($_POST), 'btnUp') !== false){
-        $val = (int)$_COOKIE["page"];
-        $val++;
-        $_COOKIE["page"] = (string)$val;
         $model = new EmployeeModel();
         $model->PageSwitching(6,null);
+        unset($model);
+    }
+
+    if(stripos(array_key_first($_POST), 'btnDown') !== false){
+        $model = new EmployeeModel();
+        $model->PageSwitching(7,null);
         unset($model);
     }
 }

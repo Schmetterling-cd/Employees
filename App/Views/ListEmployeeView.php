@@ -4,10 +4,17 @@ include_once '/var/www/vlad/Employees/autoload.php';
 class ListEmployeeView 
 {
     public static function Render($employees){
+        $page = ((int)$employees[0]['id'] / 10) + 1;
         $vars['TITLE'] = 'List';
         $action = "/App/Controllers/EmployeeController.php";
+        if(stripos($_SERVER["REQUEST_URI"], '/Employees/App/') !== false){
+            $action = str_replace('/Employees/App/Controllers','',$_SERVER["REQUEST_URI"]);
+        }
         if(stripos($_SERVER["REQUEST_URI"], '/App/Controllers') !== false){
-            $action = str_replace('/App/Controllers','',$_SERVER["REQUEST_URI"]);
+            $action = str_replace('/Employees/App/Controllers','',$_SERVER["REQUEST_URI"]);
+        }
+        if(stripos($action, '/Employees/App/Controllers') !== false){
+
         }
         $tmp = "";
         foreach($employees as $element){
@@ -36,7 +43,7 @@ class ListEmployeeView
             <div class='button_zone'>
                 <input class='button__foot' type='submit' name='btnAdd' value='Add New'>
                 <input class='page_change' type='submit' name='btnDown' value='⇩'>
-                <input class='page__number' type='text' readonly='readonly' value='0'/>
+                <input class='page__number' type='input' name='Page' value='$page' />
                 <input class='page_change' type='submit' name='btnUp' value='⇧'>
             </div>
     </form>";
