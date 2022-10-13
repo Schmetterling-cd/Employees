@@ -22,42 +22,32 @@ class Database
     }
 
     public function AddNewEmployee($first_name, $second_name, $birthday, $salary){
-        $select = $this->mysql->prepare("CALL AddNewEmployee ( ?, ?, ?, ?)");
-        $select->bind_param("ssss", $first_name, $second_name, $birthday, $salary);
-        $select->execute(); 
-        unset($select);
+        $request = sprintf("CALL AddNewEmployee ( '%s', '%s', '%s', '%s')", $this->mysql->real_escape_string($first_name), $this->mysql->real_escape_string($second_name), $this->mysql->real_escape_string($birthday), $this->mysql->real_escape_string($salary));
+        $this->mysql->query($request);
     }
     
     public function DeleteEmployeeById($id){
-        $select = $this->mysql->prepare("CALL DeleteEmployeeById (?)");
-        $select->bind_param("i", $id);
+        $request =sprintf("CALL DeleteEmployeeById (%s)",$this->mysql->real_escape_string($id));
+        $select = $this->mysql->query($request);
         return $select->execute(); 
     }
     
-    public function EmployeeOrderBy($state, $from, $to){
-        $select = $this->mysql->prepare("CALL EmployeeOrderBy ( ?, ?, ?)");
-        $select->bind_param("is", $state, $from, $to);
-        return $select->execute(); 
-    }
-
-    public function SelectGroupById($from,$to){
-        $select = $this->mysql->query("CALL SelectGroupById ( ${from}, ${to})");
-        $result = mysqli_fetch_all($select, MYSQLI_ASSOC);;
-        return $result; 
+    public function EmployeeOrderBy($page, $state){
+        $request = sprintf("CALL EmployeeOrderBy ( %s, %s)",
+        $this->mysql->real_escape_string($state),$this->mysql->real_escape_string($page));
+        $select = $this->mysql->query($request);
+        return mysqli_fetch_all($select, MYSQLI_ASSOC); 
     }
 
     public function SelectWorkerById($id){
-        $select = $this->mysql->query("CALL SelectWorkerById (${id})");
-        $result = mysqli_fetch_all($select, MYSQLI_ASSOC);
-        return $result; 
+        $request = sprintf("CALL SelectWorkerById ('%s')", $this->mysql->real_escape_string($id));
+        $select = $this->mysql->query($request);
+        return mysqli_fetch_all($select, MYSQLI_ASSOC); 
     }
 
     public function UpdateEmployeeInfo($first_name, $second_name, $birthday, $salary, $id){
-        //$this->mysql->query("UPDATE `Employees` SET `First_name` = '${first_name}', `Second_name` = '${second_name}', `Birthday` = '${birthday}', `Salary` = '${salary}' WHERE id = '${id}'");
-        $select = $this->mysql->prepare("CALL UpdateEmployeeInfo (?,?,?,?,?)");
-        $select->bind_param("sssss", $id , $first_name, $second_name, $birthday, $salary);
-        $select->execute(); 
-        unset($select);
+        $request = sprintf("CALL UpdateEmployeeInfo ('%s','%s','%s','%s','%s')",$this->mysql->real_escape_string($id) , $this->mysql->real_escape_string($first_name), $this->mysql->real_escape_string($second_name), $this->mysql->real_escape_string($birthday), $this->mysql->real_escape_string($salary));
+        $this->mysql->query($request);
     }
 }
 ?>

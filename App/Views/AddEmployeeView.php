@@ -5,9 +5,12 @@ class AddEmployeeView
 {
 
     static function Render(){
+        $token = EmployeeModel::TokinGenerator();
+        $_SESSION["token"]= $token;
         $today = date("20y-m-d");
         $vars['TITLE'] = 'Add';
-        $vars['BODY'] = "<form class='screen' method='post' action='./EmployeeController.php'>
+        $vars['BODY'] = "<form class='screen' method='post' action='./index.php'>
+        <input type='hidden' name='Token' value='$token'>
         <div class='table'>
             <div class='table__head'>
                 <div class='head__bold'>Add employee</div>  

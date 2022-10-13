@@ -3,19 +3,10 @@ include_once '/var/www/vlad/Employees/autoload.php';
 
 class ListEmployeeView 
 {
-    public static function Render($employees){
-        $page = ((int)$employees[0]['id'] / 10) + 1;
+    public static function Render($employees,$page){
+        $token = EmployeeModel::TokinGenerator();
+        $_SESSION["token"]= $token;
         $vars['TITLE'] = 'List';
-        $action = "/App/Controllers/EmployeeController.php";
-        if(stripos($_SERVER["REQUEST_URI"], '/Employees/App/') !== false){
-            $action = str_replace('/Employees/App/Controllers','',$_SERVER["REQUEST_URI"]);
-        }
-        if(stripos($_SERVER["REQUEST_URI"], '/App/Controllers') !== false){
-            $action = str_replace('/Employees/App/Controllers','',$_SERVER["REQUEST_URI"]);
-        }
-        if(stripos($action, '/Employees/App/Controllers') !== false){
-
-        }
         $tmp = "";
         foreach($employees as $element){
             $tmp = $tmp. "
@@ -28,7 +19,7 @@ class ListEmployeeView
                 <input class='button__body' type='submit' name='btnDelete".$element['id']."' value='Delete'>
             </div>";
         }
-        $vars['BODY'] = "<form class='screen' method='post' action='.".$action."'>
+        $vars['BODY'] = "<form class='screen' method='post' action='./index.php'>
         <div class='table'>
             <div class='table__head'>
                 <div class='head__bold'>First name</div>
@@ -45,7 +36,21 @@ class ListEmployeeView
                 <input class='page_change' type='submit' name='btnDown' value='⇩'>
                 <input class='page__number' type='input' name='Page' value='$page' />
                 <input class='page_change' type='submit' name='btnUp' value='⇧'>
+                <select type='submit' name='OrderBy'>
+                    <option name='OrderBy' selected value='".$_POST['OrderBy']."'>Previos</option>
+                    <option name='OrderBy' value='IdASC'>Id ASC</option>
+                    <option name='OrderBy' value='IdDSC'>Id DSC</option>
+                    <option name='OrderBy' value='FirstNameASC'>First Name ASC</option>
+                    <option name='OrderBy' value='FirstNameDSC'>First Name DSC</option>
+                    <option name='OrderBy' value='SecondNameASC'>Second Name ASC</option>
+                    <option name='OrderBy' value='SecondNameDSC'>Second Name DSC</option>
+                    <option name='OrderBy' value='BirthdayASC'>Birthday ASC</option>
+                    <option name='OrderBy' value='BirthdayDSC'>Birthday DSC</option>
+                    <option name='OrderBy' value='SalaryASC'>Salary ASC</option>
+                    <option name='OrderBy' value='SalaryDSC'>Salary DSC</option>
+                </select>
             </div>
+            <input type='hidden' name='Token' value='$token'>
     </form>";
       
     $output = new Template('/var/www/vlad/Employees/index',$vars);

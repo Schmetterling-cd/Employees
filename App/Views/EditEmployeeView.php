@@ -5,15 +5,12 @@ class EditEmployeeView
 {
 
     static function Render($employee){
+        $token = EmployeeModel::TokinGenerator();
+        $_SESSION["token"]= $token;
         $today = date("20y-m-d");
         $vars['TITLE'] = 'Edit';
-        $action = "/App/Controllers/EmployeeController.php";
-        if(stripos($_SERVER["REQUEST_URI"], '/App/Controllers') !== false){
-            $action = str_replace('/Employees/App/Controllers','',$_SERVER["REQUEST_URI"]);
-        }else{
-            
-        }
-        $vars['BODY'] = "<form class='screen' method='post' action='.$action'>
+        $vars['BODY'] = "<form class='screen' method='post' action='./index.php'>
+        <input type='hidden' name='Token' value='$token'>
         <div class='table'>
             <div class='table__head'>
                 <div class='head__bold'>Edit employee</div>  
