@@ -5,7 +5,7 @@ class EditEmployeeView
 {
 
     static function Render($employee){
-        $token = EmployeeModel::TokinGenerator();
+        $token = EmployeeController::TokinGenerator();
         $_SESSION["token"]= $token;
         $today = date("20y-m-d");
         $vars['TITLE'] = 'Edit';

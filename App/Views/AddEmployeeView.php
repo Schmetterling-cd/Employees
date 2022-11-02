@@ -5,7 +5,7 @@ class AddEmployeeView
 {
 
     static function Render(){
-        $token = EmployeeModel::TokinGenerator();
+        $token = EmployeeController::TokinGenerator();
         $_SESSION["token"]= $token;
         $today = date("20y-m-d");
         $vars['TITLE'] = 'Add';

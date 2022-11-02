@@ -1,6 +1,6 @@
 <?php
 
-    function glob_tree_search($path, $pattern, $_base_path)
+    function glob_tree_search($path, $pattern, $_base_path):array
     {
         if (is_null($_base_path)) {
             $_base_path = '';

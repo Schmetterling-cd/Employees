@@ -4,7 +4,7 @@ include_once '/var/www/vlad/Employees/autoload.php';
 class ListEmployeeView 
 {
     public static function Render($employees,$page){
-        $token = EmployeeModel::TokinGenerator();
+        $token = EmployeeController::TokinGenerator();
         $_SESSION["token"]= $token;
         $vars['TITLE'] = 'List';
         $tmp = "";
