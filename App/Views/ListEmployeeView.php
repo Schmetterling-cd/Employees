@@ -3,11 +3,16 @@ include_once '/var/www/vlad/Employees/autoload.php';
 
 class ListEmployeeView 
 {
-    public static function Render($employees,$page){
+    public static function Render(array $employees,int $page){
         $token = EmployeeController::TokinGenerator();
         $_SESSION["token"]= $token;
         $vars['TITLE'] = 'List';
         $tmp = "";
+        if (isset($_POST['OrderBy'])){
+            $orderby = $_POST['OrderBy'];
+        }else{
+            $orderby = 'IdASC';
+        }
         foreach($employees as $element){
             $tmp = $tmp. "
             <div class='item'>
@@ -37,7 +42,7 @@ class ListEmployeeView
                 <input class='page__number' type='input' name='Page' value='$page' />
                 <input class='page_change' type='submit' name='btnUp' value='⇧'>
                 <select type='submit' name='OrderBy'>
-                    <option name='OrderBy' selected value='".$_POST['OrderBy']."'>Previos</option>
+                    <option name='OrderBy' selected value='$orderby'>Previos</option>
                     <option name='OrderBy' value='IdASC'>Id ASC</option>
                     <option name='OrderBy' value='IdDSC'>Id DSC</option>
                     <option name='OrderBy' value='FirstNameASC'>First Name ASC</option>

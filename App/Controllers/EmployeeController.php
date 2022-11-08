@@ -2,7 +2,7 @@
 include_once '/var/www/vlad/Employees/autoload.php';
 
 class EmployeeController{
-
+    protected const emptyarray = [];
     protected $model;
 
     public function __construct(){
@@ -10,31 +10,30 @@ class EmployeeController{
     }
 
     public function Start(){
-        session_start();
         $this->model->List(1,0);
     }
 
     public function Listener(){
         session_start();
+        if($_SERVER["REQUEST_METHOD"] == "GET"){
+            $this->Start();
+        }   
         if($_POST["Token"] === $_SESSION["token"]){
-            if($_SERVER["REQUEST_METHOD"] == "GET"){
-                $this->Start();
-            }   
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if(stripos(array_key_first($_POST), 'btnEdit') !== false){
-                    $id = (int)str_replace('btnEdit','',array_key_first($_POST));
+                    $id[0] = (int)str_replace('btnEdit','',array_key_first($_POST));
                     $this->PageSwitching(0,$id);
                 }
                 if(stripos(array_key_first($_POST), 'btnAdd') !== false){
-                    $this->PageSwitching(1, null);
+                    $this->PageSwitching(1, self::emptyarray);
                 }
             
                 if(isset($_POST['btnCancel'])){
-                    $this->PageSwitching(2, null);
+                    $this->PageSwitching(2, self::emptyarray);
                 }
             
                 if(stripos(array_key_first($_POST), 'btnDelete') !== false){
-                    $id = (int)str_replace('btnDelete','',array_key_first($_POST));
+                    $id[0] = (int)str_replace('btnDelete','',array_key_first($_POST));
                     $this->PageSwitching(3, $id);
                 }
             
@@ -50,20 +49,20 @@ class EmployeeController{
                 }
             
                 if(isset($_POST["btnUp"])){
-                    $this->PageSwitching(6,null);
+                    $this->PageSwitching(6,self::emptyarray);
                 }
             
                 if(isset($_POST["btnDown"])){
-                    $this->PageSwitching(7,null);
+                    $this->PageSwitching(7,self::emptyarray);
                 }
             }
         }
     }
 
-    public function PageSwitching($process, $val){
+    public function PageSwitching(int $process, array $val){
         switch ($process){
             case 0:
-                $EmployeeList = $this->DB->SelectWorkerById($val);
+                $EmployeeList = $this->model->DB->SelectWorkerById($val[0]);
                 EditEmployeeView::Render($EmployeeList[0]);
                 break;
             case 1:
@@ -73,7 +72,7 @@ class EmployeeController{
                 $this->model->List(1,0);
                 break;
             case 3:
-                $this->model->Delete($val);
+                $this->model->Delete($val[0]);
                 $page = (int)$_POST['Page'];
                 $mode = $this->Order($_POST["OrderBy"]);
                 $this->model->List($page,$mode);
@@ -105,7 +104,7 @@ class EmployeeController{
         }
     }
 
-    protected function Order($SortMode):int{
+    protected function Order(string $SortMode):int{
         switch ($SortMode){
             case "IdASC":
                 $DBmode = 0;

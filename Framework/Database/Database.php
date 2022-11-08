@@ -8,7 +8,7 @@ class Database
     protected $password;
     protected $database;
 
-    public function __construct($name,$user,$password,$database){
+    public function __construct(string $name, string $user, string $password, string $database){
         $this->name = $name;
         $this->user = $user;
         $this->password = $password;
@@ -21,31 +21,31 @@ class Database
         $this->mysql = new mysqli($this->name,$this->user,$this->password,$this->database);
     }
 
-    public function AddNewEmployee($first_name, $second_name, $birthday, $salary){
+    public function AddNewEmployee(string $first_name,string $second_name,string $birthday, $salary){
         $request = sprintf("CALL AddNewEmployee ( '%s', '%s', '%s', '%s')", $this->mysql->real_escape_string($first_name), $this->mysql->real_escape_string($second_name), $this->mysql->real_escape_string($birthday), $this->mysql->real_escape_string($salary));
         $this->mysql->query($request);
     }
     
-    public function DeleteEmployeeById($id){
+    public function DeleteEmployeeById(int $id){
         $request =sprintf("CALL DeleteEmployeeById (%s)",$this->mysql->real_escape_string($id));
         $select = $this->mysql->query($request);
-        return $select->execute(); 
+        $select->execute(); 
     }
     
-    public function EmployeeOrderBy($page, $state){
+    public function EmployeeOrderBy(string $page, string $state):array{
         $request = sprintf("CALL EmployeeOrderBy ( %s, %s)",
         $this->mysql->real_escape_string($state),$this->mysql->real_escape_string($page));
         $select = $this->mysql->query($request);
         return mysqli_fetch_all($select, MYSQLI_ASSOC); 
     }
 
-    public function SelectWorkerById($id){
+    public function SelectWorkerById(int $id):array{
         $request = sprintf("CALL SelectWorkerById ('%s')", $this->mysql->real_escape_string($id));
         $select = $this->mysql->query($request);
         return mysqli_fetch_all($select, MYSQLI_ASSOC); 
     }
 
-    public function UpdateEmployeeInfo($first_name, $second_name, $birthday, $salary, $id){
+    public function UpdateEmployeeInfo(string $first_name,string $second_name,string $birthday,string $salary,int $id){
         $request = sprintf("CALL UpdateEmployeeInfo ('%s','%s','%s','%s','%s')",$this->mysql->real_escape_string($id) , $this->mysql->real_escape_string($first_name), $this->mysql->real_escape_string($second_name), $this->mysql->real_escape_string($birthday), $this->mysql->real_escape_string($salary));
         $this->mysql->query($request);
     }

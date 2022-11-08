@@ -4,7 +4,7 @@ include '/var/www/vlad/Employees/config.php';
 
 abstract class Model
 {
-    protected $DB;
+    public $DB;
 
     public function setDB(){
 		$this->DB = new Database(DB_URL,DB_USER,DB_PASSWORD,DB_NAME);
